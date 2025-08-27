@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Student = exports.Person = void 0;
+exports.Car = exports.Student = exports.Person = void 0;
 class Person {
     constructor(name, age) {
         this.name = name;
@@ -22,3 +22,14 @@ class Student extends Person {
     }
 }
 exports.Student = Student;
+class Car {
+    constructor(brand, model, year) {
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+    }
+    displayCarInfo() {
+        console.log(`Brand: ${this.brand}\nModel: ${this.model}\nYear: ${this.year}`);
+    }
+}
+exports.Car = Car;

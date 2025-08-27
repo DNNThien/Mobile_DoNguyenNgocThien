@@ -25,3 +25,19 @@ export class Student extends Person {
         console.log(`Grade: ${this.grade}.`);
     }
 }
+
+export class Car {
+    brand: string;
+    model: string;
+    year: number;
+
+    constructor(brand: string, model: string, year: number) {
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+    }
+
+    displayCarInfo(): void {
+        console.log(`Brand: ${this.brand}\nModel: ${this.model}\nYear: ${this.year}`);
+    }
+}
