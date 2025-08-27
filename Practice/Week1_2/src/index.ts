@@ -41,3 +41,21 @@ export class Car {
         console.log(`Brand: ${this.brand}\nModel: ${this.model}\nYear: ${this.year}`);
     }
 }
+
+export class Rectangle {
+    width: number;
+    height: number;
+
+    constructor(width: number, height: number) {
+        this.width = width;
+        this.height = height;
+    }
+
+    Area(): number {
+        return this.width * this.height;
+    }
+
+    Parameter(): number {
+        return (this.width + this.height) * 2;
+    }
+}

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Car = exports.Student = exports.Person = void 0;
+exports.Rectangle = exports.Car = exports.Student = exports.Person = void 0;
 class Person {
     constructor(name, age) {
         this.name = name;
@@ -33,3 +33,16 @@ class Car {
     }
 }
 exports.Car = Car;
+class Rectangle {
+    constructor(width, height) {
+        this.width = width;
+        this.height = height;
+    }
+    Area() {
+        return this.width * this.height;
+    }
+    Parameter() {
+        return (this.width + this.height) * 2;
+    }
+}
+exports.Rectangle = Rectangle;
