@@ -59,3 +59,37 @@ export class Rectangle {
         return (this.width + this.height) * 2;
     }
 }
+
+export class BankAccount {
+    balance: number = 0;
+
+    constructor(balance?: number) {
+        if(balance) this.balance = balance;
+    }
+
+    getBalance(): void {
+        console.log(`Your balance is ${this.balance}VND`);
+    }
+
+    deposit(amount: number): void {
+        if(amount > 0 && amount % 50000 == 0) {
+            this.balance += amount;
+            console.log(`Deposit successfully`);
+            this.getBalance();
+        }
+        else console.log(`The additional deposit must be greater than zero and in multiples of 50,000VND.`); 
+    }
+
+    withdraw(amount: number): void {
+        
+        if (amount > 0 && amount % 50000 == 0) {
+            this.balance -= amount;
+            console.log(`Withdrawal successful`);
+            this.getBalance();
+        }
+        else if(amount <= 0 || amount % 50000 != 0)
+            console.log(`Withdrawal must be greater than zero and in multiples of 50,000VND.`);
+        else if(this.balance - amount < 0)
+            console.log(`Insufficient balance`);
+    }
+}
