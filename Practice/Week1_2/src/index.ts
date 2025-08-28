@@ -109,3 +109,29 @@ export class Book {
         console.log(`Title: ${this.title}\nAuthor: ${this.author}\nYear: ${this.year}`);
     }
 }
+
+export class User {
+    private name: string;
+
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    setName(str: string): void {
+        this.name = str;
+    }
+
+    getName(): string {
+        return this.name;
+    }
+}
+
+export class Product {
+    name: string;
+    price: number;
+
+    constructor(name: string, price: number) {
+        this.name = name;
+        this.price = price;
+    }
+}
