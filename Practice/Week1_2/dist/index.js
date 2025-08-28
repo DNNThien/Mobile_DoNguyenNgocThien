@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Product = exports.User = exports.Book = exports.BankAccount = exports.Rectangle = exports.Car = exports.Student = exports.Person = void 0;
+exports.Dog = exports.Product = exports.User = exports.Book = exports.BankAccount = exports.Rectangle = exports.Car = exports.Student = exports.Person = void 0;
 class Person {
     constructor(name, age) {
         this.name = name;
@@ -107,3 +107,12 @@ class Product {
     }
 }
 exports.Product = Product;
+class Dog {
+    constructor(name) {
+        this.name = name;
+    }
+    sound() {
+        console.log(`Woof! Woof!`);
+    }
+}
+exports.Dog = Dog;
