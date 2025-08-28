@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Dog = exports.Product = exports.User = exports.Book = exports.BankAccount = exports.Rectangle = exports.Car = exports.Student = exports.Person = void 0;
+exports.Account = exports.Dog = exports.Product = exports.User = exports.Book = exports.BankAccount = exports.Rectangle = exports.Car = exports.Student = exports.Person = void 0;
 class Person {
     constructor(name, age) {
         this.name = name;
@@ -116,3 +116,37 @@ class Dog {
     }
 }
 exports.Dog = Dog;
+class Account {
+    constructor(accountID, username, balance) {
+        this.accountID = accountID;
+        this.username = username;
+        this.balance = balance;
+    }
+    getBalance() {
+        return this.balance;
+    }
+    getUsername() {
+        return this.username;
+    }
+    deposit(amount) {
+        if (amount > 0 && amount % 50000 == 0) {
+            this.balance += amount;
+            console.log(`Deposit successfully`);
+            console.log(`Your balance is ${this.getBalance()}`);
+        }
+        else
+            console.log(`The additional deposit must be greater than zero and in multiples of 50,000VND.`);
+    }
+    withdraw(amount) {
+        if (amount > 0 && amount % 50000 == 0) {
+            this.balance -= amount;
+            console.log(`Withdrawal successful`);
+            console.log(`Your balance is ${this.getBalance()}`);
+        }
+        else if (amount <= 0 || amount % 50000 != 0)
+            console.log(`Withdrawal must be greater than zero and in multiples of 50,000VND.`);
+        else if (this.balance - amount < 0)
+            console.log(`Insufficient balance`);
+    }
+}
+exports.Account = Account;

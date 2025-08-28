@@ -152,3 +152,46 @@ export class Dog implements Animal {
         console.log(`Woof! Woof!`);
     }
 }
+
+export class Account {
+
+    readonly accountID: string;
+    public username: string;
+    private balance: number;
+
+    constructor(accountID:string, username:string, balance:number) {
+        this.accountID = accountID;
+        this.username = username;
+        this.balance = balance;
+    }
+
+    public getBalance(): number {
+        return this.balance;
+    }
+
+    public getUsername(): string {
+        return this.username;
+    }
+
+    public deposit(amount: number): void {
+        if(amount > 0 && amount % 50000 == 0) {
+            this.balance += amount;
+            console.log(`Deposit successfully`);
+            console.log(`Your balance is ${this.getBalance()}`);
+        }
+        else console.log(`The additional deposit must be greater than zero and in multiples of 50,000VND.`); 
+    }
+
+    public withdraw(amount: number): void {
+        
+        if (amount > 0 && amount % 50000 == 0) {
+            this.balance -= amount;
+            console.log(`Withdrawal successful`);
+            console.log(`Your balance is ${this.getBalance()}`);
+        }
+        else if(amount <= 0 || amount % 50000 != 0)
+            console.log(`Withdrawal must be greater than zero and in multiples of 50,000VND.`);
+        else if(this.balance - amount < 0)
+            console.log(`Insufficient balance`);
+    }
+}
