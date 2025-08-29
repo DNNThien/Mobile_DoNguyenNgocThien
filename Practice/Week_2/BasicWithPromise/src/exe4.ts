@@ -1,7 +1,7 @@
 function randomNumber(): Promise<number> {
     return new Promise((resolve, reject) => {
-        var num = Math.floor(Math.random() * 10);
-        if(num >= 5) {
+        var num = Math.floor(Math.random() * 100);
+        if(num >= 50) {
             console.log('RESOLVE');
             resolve(num);
         } else {
