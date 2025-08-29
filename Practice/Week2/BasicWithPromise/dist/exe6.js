@@ -1,4 +1,7 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.task3 = exports.task2 = exports.task1 = void 0;
+exports.multipleTask = multipleTask;
 function multipleTask(name, timeDelay, value) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -10,10 +13,10 @@ function multipleTask(name, timeDelay, value) {
         }, timeDelay);
     });
 }
-var task1 = multipleTask('Task 1', 1000, Math.floor(Math.random() * 10));
-var task2 = multipleTask('Task 2', 2000, Math.floor(Math.random() * 10));
-var task3 = multipleTask('Task 3', 3000, Math.floor(Math.random() * 10));
-Promise.all([task1, task2, task3])
+exports.task1 = multipleTask('Task 1', 1000, Math.floor(Math.random() * 10));
+exports.task2 = multipleTask('Task 2', 2000, Math.floor(Math.random() * 10));
+exports.task3 = multipleTask('Task 3', 3000, Math.floor(Math.random() * 10));
+Promise.all([exports.task1, exports.task2, exports.task3])
     .then((results) => {
     console.log(results);
 })
