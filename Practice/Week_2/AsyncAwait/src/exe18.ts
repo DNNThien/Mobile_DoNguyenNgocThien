@@ -6,18 +6,17 @@ interface User {
 
 async function fetchUser(id: number): Promise<User> {
   return new Promise((resolve, reject) => {
-    if (id <= 0) {
+    if (id <= 0)
       reject(new Error("Invalid id"));
-      return;
+    else {
+        setTimeout(() => {
+        resolve({
+            id,
+            name: `User ${id}`,
+            email: `user${id}@example.com`
+        });
+        }, 1000);
     }
-
-    setTimeout(() => {
-      resolve({
-        id,
-        name: `User ${id}`,
-        email: `user${id}@example.com`
-      });
-    }, 1000); // 1000 ms = 1 giây
   });
 }
 
@@ -29,3 +28,6 @@ async function fetchUser(id: number): Promise<User> {
     console.error("Error (await):", err);
   }
 })();
+
+
+

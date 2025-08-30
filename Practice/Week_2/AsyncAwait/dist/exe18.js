@@ -11,17 +11,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 function fetchUser(id) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => {
-            if (id <= 0) {
+            if (id <= 0)
                 reject(new Error("Invalid id"));
-                return;
+            else {
+                setTimeout(() => {
+                    resolve({
+                        id,
+                        name: `User ${id}`,
+                        email: `user${id}@example.com`
+                    });
+                }, 1000);
             }
-            setTimeout(() => {
-                resolve({
-                    id,
-                    name: `User ${id}`,
-                    email: `user${id}@example.com`
-                });
-            }, 1000); // 1000 ms = 1 giây
         });
     });
 }
