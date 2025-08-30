@@ -35,3 +35,5 @@ async function fetchAllUsers(ids: number[]) {
     var result = await fetchAllUsers([1, 2, 3, 4]);
     console.log(result);
 })();
+
+
