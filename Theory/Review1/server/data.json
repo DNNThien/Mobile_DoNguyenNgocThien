@@ -1,0 +1,34 @@
+[
+  {
+    "name": " TyAmoxicillin",
+    "price": "$199.99",
+    "star": "4.9",
+    "description": "Used to treat infections such as respiratory tract infections, ear infections...",
+    "image": "https://i.postimg.cc/prP8VD8s/Ty-Amoxicillin.png",
+    "id": "1"
+  },
+  {
+    "name": "Paracetamol",
+    "price": "$199.99",
+    "star": "4.9",
+    "description": "Used to treat infections such as respiratory tract infections, ear infections...",
+    "image": "https://i.postimg.cc/CM4kPQTX/Paracetamol.png",
+    "id": "2"
+  },
+  {
+    "name": "Ibuprotein",
+    "price": "$199.99",
+    "star": "4.9",
+    "description": "Used to treat infections such as respiratory tract infections, ear infections...",
+    "image": "https://i.postimg.cc/nrTmXCGp/Ibuprotein.png",
+    "id": "3"
+  },
+  {
+    "name": "Antifungal",
+    "price": "$199.99",
+    "star": "4.9",
+    "description": "Used to treat infections such as respiratory tract infections, ear infections...",
+    "image": "https://i.postimg.cc/jddNG4R5/Antifungal.png",
+    "id": "4"
+  }
+]
