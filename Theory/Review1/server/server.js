@@ -5,7 +5,7 @@ const { MongoClient } = require("mongodb");
 const app = express();
 app.use(cors());
 
-const uri = "mongodb://localhost:27017"; // MongoDB local
+const uri = "mongodb://localhost:27017";
 const client = new MongoClient(uri);
 
 app.get("/medicine", async (req, res) => {
