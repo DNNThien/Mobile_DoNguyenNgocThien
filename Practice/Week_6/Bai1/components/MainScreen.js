@@ -100,7 +100,9 @@ export default function MainScreen({ navigation, route }) {
           }}
           onPress={() =>
             navigation.navigate('Choose Color', {
-              image: require('../assets/vs_blue.png'),
+              image: route.params?.image
+                ? route.params?.image
+                : require('../assets/vs_blue.png'),
             })
           }>
           <Text
