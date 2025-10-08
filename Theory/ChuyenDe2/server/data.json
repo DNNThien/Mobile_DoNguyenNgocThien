@@ -1,0 +1,82 @@
+[
+  {
+    "idShoe": "AD003",
+    "name": "Adidas NMD",
+    "size": "L",
+    "price": 190,
+    "quantity": 20,
+    "id": "3"
+  },
+  {
+    "idShoe": "AD004",
+    "name": "Adidas Gazelle",
+    "size": "XL",
+    "price": 140.75,
+    "quantity": 15,
+    "id": "4"
+  },
+  {
+    "idShoe": "AD005",
+    "name": "Adidas ZX 2K Boost",
+    "size": "XXL",
+    "price": 160.3,
+    "quantity": 12,
+    "id": "5"
+  },
+  {
+    "idShoe": "NI001",
+    "name": "Nike Air Max",
+    "size": "S",
+    "price": 150,
+    "quantity": 20,
+    "id": "6"
+  },
+  {
+    "idShoe": "NI002",
+    "name": "Nike Revolution",
+    "size": "M",
+    "price": 95.75,
+    "quantity": 40,
+    "id": "7"
+  },
+  {
+    "idShoe": "NI003",
+    "name": "Nike Dunk Low",
+    "size": "L",
+    "price": 175,
+    "quantity": 22,
+    "id": "8"
+  },
+  {
+    "idShoe": "NI004",
+    "name": "Nike Air Force 1",
+    "size": "XL",
+    "price": 160.2,
+    "quantity": 18,
+    "id": "9"
+  },
+  {
+    "idShoe": "NI005",
+    "name": "Nike ZoomX",
+    "size": "XXL",
+    "price": 200.5,
+    "quantity": 10,
+    "id": "10"
+  },
+  {
+    "idShoe": "ABC123",
+    "name": "New Shoe",
+    "size": "XL",
+    "price": 100.01,
+    "quantity": 10,
+    "id": "11"
+  },
+  {
+    "idShoe": "ZZZ91",
+    "name": "Super Shoe",
+    "size": "L",
+    "price": 100.01,
+    "quantity": 10,
+    "id": "12"
+  }
+]
