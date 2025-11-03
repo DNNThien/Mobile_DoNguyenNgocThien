@@ -12,14 +12,14 @@ import {
 } from "react-native";
 
 export default function LoginScreen({ navigation }) {
-  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
 
   const ResetTextInput = useCallback(() => {
-    setUserName("");
+    setEmail("");
     setPassword("");
-  }, [userName, setUserName, password, setPassword]);
+  }, [email, setEmail, password, setPassword]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -33,7 +33,9 @@ export default function LoginScreen({ navigation }) {
         >
           <Ionicons name="arrow-back" size={28} color={"white"} />
         </TouchableOpacity>
+
         <View style={styles.subContainer}>
+          {/**Header */}
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
@@ -42,16 +44,22 @@ export default function LoginScreen({ navigation }) {
             <Text style={styles.title}>Login into your Account</Text>
           </View>
 
+          {/**Email */}
           <View style={[styles.subEnterInforContainer, { marginTop: 50 }]}>
-            <Ionicons name="person" size={24} color={"grey"} />
+            <Ionicons name="mail" size={24} color={"grey"} />
             <TextInput
               style={styles.textInputContainer}
-              value={userName}
-              onChangeText={setUserName}
-              placeholder="Username"
-              keyboardType="default"
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Email"
+              keyboardType="email-address"
             />
+            {email.trim() && !email.endsWith("@gmail.com") && (
+              <Ionicons name="alert" size={24} color={"red"} />
+            )}
           </View>
+
+          {/**Password */}
           <View style={styles.subEnterInforContainer}>
             <Ionicons name="lock-closed" size={24} color={"grey"} />
             <TextInput
@@ -73,12 +81,50 @@ export default function LoginScreen({ navigation }) {
               />
             </TouchableOpacity>
           </View>
+
+          {/**Login Button */}
           <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={() => ResetTextInput()}
+            style={[
+              styles.buttonContainer,
+              {
+                backgroundColor:
+                  email.trim() &&
+                  email.endsWith("@gmail.com") &&
+                  password.trim()
+                    ? "green"
+                    : "grey",
+              },
+            ]}
+            disabled={
+              email.trim() && email.endsWith("@gmail.com") && password.trim()
+                ? false
+                : true
+            }
+            onPress={() => navigation.navigate("VerifyOTP", { email: email })}
           >
             <Text style={styles.buttonContent}>Log in</Text>
           </TouchableOpacity>
+
+          {/**Forget password */}
+          <View
+            style={{
+              width: 300,
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              marginTop: 10,
+            }}
+          >
+            <Text
+              style={{ fontSize: 14, fontWeight: "bold", color: "green" }}
+              onPress={() =>
+                navigation.navigate("ForgetPassword", { email: email })
+              }
+            >
+              Forget Password?
+            </Text>
+          </View>
+
+          {/**Go to Sign Up */}
           <View
             style={{
               position: "absolute",
@@ -162,7 +208,6 @@ const styles = StyleSheet.create({
     width: 300,
     borderRadius: 10,
     elevation: 10,
-    backgroundColor: "green",
   },
   buttonContent: {
     fontSize: 18,

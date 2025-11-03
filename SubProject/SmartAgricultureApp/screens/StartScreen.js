@@ -33,6 +33,7 @@ export default function StartScreen({ navigation }) {
             style={[
               styles.buttonContainer,
               {
+                flexDirection: "row",
                 marginTop: 20,
                 borderWidth: 1,
                 borderColor: "white",
@@ -42,7 +43,10 @@ export default function StartScreen({ navigation }) {
             onPress={() => navigation.navigate("SignUpScreen")}
           >
             <Text style={{ fontSize: 16, color: "white" }}>
-              Don't have an Account? Sign Up
+              Don't have an Account?{" "}
+            </Text>
+            <Text style={{ fontSize: 16, fontWeight: "bold", color: "white" }}>
+              Sign Up
             </Text>
           </TouchableOpacity>
         </View>

@@ -9,26 +9,36 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
+import TermsContent from "../assets/documents/Terms";
 
 export default function SignUpScreen({ navigation }) {
+  const [name, setName] = useState("");
+  const [sex, setSex] = useState("");
   const [email, setEmail] = useState("");
-  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const [showConfirmPassword, setShowConfirmPassword] = useState(true);
+  const [confirmTerm, setConfirmTerm] = useState(false);
+  const [showTermsContent, setShowTermsContent] = useState(false);
 
   const ResetTextInput = useCallback(() => {
+    setName("");
+    setSex("");
     setEmail("");
-    setUserName("");
     setPassword("");
     setConfirmPassword("");
+    setShowTermsContent(false);
+    setConfirmTerm(false);
   }, [
+    name,
+    setName,
+    sex,
+    setSex,
     email,
     setEmail,
-    userName,
-    setUserName,
     password,
     setPassword,
     confirmPassword,
@@ -55,6 +65,62 @@ export default function SignUpScreen({ navigation }) {
             <Text style={styles.title}>Tell us about yourself</Text>
           </View>
 
+          {/**Name */}
+          <View style={styles.subEnterInforContainer}>
+            <Ionicons name="person" size={24} color={"grey"} />
+            <TextInput
+              style={styles.textInputContainer}
+              value={name}
+              onChangeText={setName}
+              placeholder="Name"
+              keyboardType="default"
+              maxLength={20}
+            />
+          </View>
+
+          {/**Sex */}
+          <View style={styles.subEnterSexContainer}>
+            <TouchableOpacity
+              style={styles.sexContainer}
+              onPress={() => setSex("male")}
+            >
+              <Ionicons
+                name={sex === "male" ? "male" : "male-outline"}
+                size={24}
+                color={sex === "male" ? "tomato" : "grey"}
+              />
+              <Text
+                style={{
+                  marginLeft: 10,
+                  fontWeight: sex === "male" && "bold",
+                  color: sex === "male" ? "tomato" : "grey",
+                }}
+              >
+                Male
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.sexContainer}
+              onPress={() => setSex("female")}
+            >
+              <Ionicons
+                name={sex === "female" ? "female" : "female-outline"}
+                size={24}
+                color={sex === "female" ? "tomato" : "grey"}
+              />
+              <Text
+                style={{
+                  marginLeft: 10,
+                  fontWeight: sex === "female" && "bold",
+                  color: sex === "female" ? "tomato" : "grey",
+                }}
+              >
+                Female
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/**Email */}
           <View style={styles.subEnterInforContainer}>
             <Ionicons name="mail" size={24} color={"grey"} />
             <TextInput
@@ -64,17 +130,12 @@ export default function SignUpScreen({ navigation }) {
               placeholder="Email"
               keyboardType="email-address"
             />
+            {email.trim() && !email.endsWith("@gmail.com") && (
+              <Ionicons name="alert" color={"red"} size={24} />
+            )}
           </View>
-          <View style={styles.subEnterInforContainer}>
-            <Ionicons name="person" size={24} color={"grey"} />
-            <TextInput
-              style={styles.textInputContainer}
-              value={userName}
-              onChangeText={setUserName}
-              placeholder="Username"
-              keyboardType="default"
-            />
-          </View>
+
+          {/**Password */}
           <View style={styles.subEnterInforContainer}>
             <Ionicons name="lock-closed" size={24} color={"grey"} />
             <TextInput
@@ -96,6 +157,8 @@ export default function SignUpScreen({ navigation }) {
               />
             </TouchableOpacity>
           </View>
+
+          {/**Confirm password */}
           <View style={styles.subEnterInforContainer}>
             <Ionicons name="lock-closed" size={24} color={"grey"} />
             <TextInput
@@ -106,6 +169,11 @@ export default function SignUpScreen({ navigation }) {
               keyboardType="default"
               secureTextEntry={showConfirmPassword}
             />
+            {confirmPassword.trim() && confirmPassword != password && (
+              <View style={{ position: "absolute", right: 1, marginRight: 30 }}>
+                <Ionicons name="alert" size={24} color={"red"} />
+              </View>
+            )}
             <TouchableOpacity
               style={{ position: "absolute", right: 1, marginRight: 10 }}
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -117,12 +185,73 @@ export default function SignUpScreen({ navigation }) {
               />
             </TouchableOpacity>
           </View>
+
+          {/**Content Terms */}
+          {showTermsContent && (
+            <View style={{ height: 210, width: 300 }}>
+              <ScrollView>
+                <TermsContent />
+              </ScrollView>
+            </View>
+          )}
+
+          {/**Confirm Terms */}
+          <View style={styles.termContainer}>
+            <TouchableOpacity onPress={() => setConfirmTerm(!confirmTerm)}>
+              <Ionicons
+                name={confirmTerm ? "checkbox-outline" : "square-outline"}
+                size={24}
+                color={"grey"}
+              />
+            </TouchableOpacity>
+            <Text style={{ marginLeft: 10, color: "grey" }}>
+              I agree to the{" "}
+            </Text>
+            <Text
+              style={{ color: "blue" }}
+              onPress={() => setShowTermsContent(!showTermsContent)}
+            >
+              Terms and Conditions.
+            </Text>
+          </View>
+
+          {/**Sign Up Button */}
           <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={() => ResetTextInput()}
+            style={[
+              styles.buttonContainer,
+              {
+                backgroundColor:
+                  name.trim() &&
+                  sex.trim() &&
+                  email.trim() &&
+                  email.endsWith("@gmail.com") &&
+                  password.trim() &&
+                  confirmPassword.trim() &&
+                  password === confirmPassword &&
+                  confirmTerm
+                    ? "green"
+                    : "grey",
+                marginTop: showTermsContent ? 10 : 50,
+              },
+            ]}
+            disabled={
+              name.trim() &&
+              sex.trim() &&
+              email.trim() &&
+              email.endsWith("@gmail.com") &&
+              password.trim() &&
+              confirmPassword.trim() &&
+              password === confirmPassword &&
+              confirmTerm
+                ? false
+                : true
+            }
+            onPress={() => navigation.navigate("VerifyOTP", { email: email })}
           >
             <Text style={styles.buttonContent}>Sign Up</Text>
           </TouchableOpacity>
+
+          {/**Go to Login */}
           <View
             style={{
               position: "absolute",
@@ -195,6 +324,27 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: "grey",
   },
+  subEnterSexContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: 50,
+    width: 300,
+  },
+  sexContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 50,
+    width: "48%",
+    borderBottomWidth: 2,
+    borderBottomColor: "grey",
+  },
+  termContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: 300,
+  },
   textInputContainer: {
     flex: 1,
     marginLeft: 10,
@@ -203,12 +353,10 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 50,
     height: 50,
     width: 300,
     borderRadius: 10,
     elevation: 10,
-    backgroundColor: "green",
   },
   buttonContent: {
     fontSize: 18,
