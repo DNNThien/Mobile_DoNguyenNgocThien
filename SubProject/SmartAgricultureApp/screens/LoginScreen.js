@@ -9,17 +9,63 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
+import { auth } from "../assets/server/FirebaseConfig";
+import { checkEmailExists, loginSendOtp } from "../components/UserAPI";
+import { showAlert } from "../components/ShowAlert";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginScreen({ navigation }) {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
+
+  const printLog = (title, data) => {
+    console.log("LoginScreen: ", title, data);
+  };
 
   const ResetTextInput = useCallback(() => {
     setEmail("");
     setPassword("");
   }, [email, setEmail, password, setPassword]);
+
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      const result = await checkEmailExists(email);
+      if (!result.success && result.message === "Email not found") {
+        showAlert("Notification", "Account not found");
+        setLoading(false);
+      } else if (result.message == "Email already exists") {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const idToken = await userCredential.user.getIdToken();
+        printLog("Result check account: ", result);
+        await loginSendOtp(email);
+        setLoading(false);
+        navigation.navigate("VerifyOTP", {
+          idToken: idToken,
+          purpose: "login",
+          email: email,
+          password: password,
+        });
+      }
+    } catch (err) {
+      setLoading(false);
+      printLog("Error: ", err);
+      console.log("Error Code: ", err.code);
+      console.log("Error Message: ", err.message);
+      console.log("--------------------");
+      if (err.code === "auth/invalid-credential") {
+        showAlert("Error", "Incorrect account information!");
+      }
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -53,6 +99,7 @@ export default function LoginScreen({ navigation }) {
               onChangeText={setEmail}
               placeholder="Email"
               keyboardType="email-address"
+              autoCapitalize="none"
             />
             {email.trim() && !email.endsWith("@gmail.com") && (
               <Ionicons name="alert" size={24} color={"red"} />
@@ -100,9 +147,13 @@ export default function LoginScreen({ navigation }) {
                 ? false
                 : true
             }
-            onPress={() => navigation.navigate("VerifyOTP", { email: email })}
+            onPress={() => handleLogin()}
           >
-            <Text style={styles.buttonContent}>Log in</Text>
+            {loading ? (
+              <ActivityIndicator size={"large"} color={"white"} />
+            ) : (
+              <Text style={styles.buttonContent}>Log in</Text>
+            )}
           </TouchableOpacity>
 
           {/**Forget password */}

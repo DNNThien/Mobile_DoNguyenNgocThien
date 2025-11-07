@@ -10,33 +10,37 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import TermsContent from "../assets/documents/Terms";
+import { checkEmailExists, signupSendOtp } from "../components/UserAPI";
+import { showAlert } from "../components/ShowAlert";
 
 export default function SignUpScreen({ navigation }) {
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
-  const [sex, setSex] = useState("");
+  const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const [showConfirmPassword, setShowConfirmPassword] = useState(true);
-  const [confirmTerm, setConfirmTerm] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [showTermsContent, setShowTermsContent] = useState(false);
 
   const ResetTextInput = useCallback(() => {
     setName("");
-    setSex("");
+    setGender("");
     setEmail("");
     setPassword("");
     setConfirmPassword("");
     setShowTermsContent(false);
-    setConfirmTerm(false);
+    setAcceptedTerms(false);
   }, [
     name,
     setName,
-    sex,
-    setSex,
+    gender,
+    setGender,
     email,
     setEmail,
     password,
@@ -44,6 +48,32 @@ export default function SignUpScreen({ navigation }) {
     confirmPassword,
     setConfirmPassword,
   ]);
+
+  const handleSignUp = async () => {
+    try {
+      setLoading(true);
+      const result = await checkEmailExists(email);
+      console.log("SignUpScreen: Result check email: ", result);
+      if (result.success) {
+        showAlert("Information", result.message);
+        setLoading(false);
+      } else if (result.message === "Email not found") {
+        await signupSendOtp(email);
+        setLoading(false);
+        navigation.navigate("VerifyOTP", {
+          purpose: "signup",
+          email: email,
+          name: name,
+          gender: gender,
+          password: password,
+          acceptedTerms: acceptedTerms,
+        });
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log("SignUpScreen: Error: ", error);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -75,44 +105,45 @@ export default function SignUpScreen({ navigation }) {
               placeholder="Name"
               keyboardType="default"
               maxLength={20}
+              autoCapitalize="words"
             />
           </View>
 
-          {/**Sex */}
-          <View style={styles.subEnterSexContainer}>
+          {/**Gender */}
+          <View style={styles.subEnterGenderContainer}>
             <TouchableOpacity
-              style={styles.sexContainer}
-              onPress={() => setSex("male")}
+              style={styles.genderContainer}
+              onPress={() => setGender("male")}
             >
               <Ionicons
-                name={sex === "male" ? "male" : "male-outline"}
+                name={gender === "male" ? "male" : "male-outline"}
                 size={24}
-                color={sex === "male" ? "tomato" : "grey"}
+                color={gender === "male" ? "tomato" : "grey"}
               />
               <Text
                 style={{
                   marginLeft: 10,
-                  fontWeight: sex === "male" && "bold",
-                  color: sex === "male" ? "tomato" : "grey",
+                  fontWeight: gender === "male" && "bold",
+                  color: gender === "male" ? "tomato" : "grey",
                 }}
               >
                 Male
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.sexContainer}
-              onPress={() => setSex("female")}
+              style={styles.genderContainer}
+              onPress={() => setGender("female")}
             >
               <Ionicons
-                name={sex === "female" ? "female" : "female-outline"}
+                name={gender === "female" ? "female" : "female-outline"}
                 size={24}
-                color={sex === "female" ? "tomato" : "grey"}
+                color={gender === "female" ? "tomato" : "grey"}
               />
               <Text
                 style={{
                   marginLeft: 10,
-                  fontWeight: sex === "female" && "bold",
-                  color: sex === "female" ? "tomato" : "grey",
+                  fontWeight: gender === "female" && "bold",
+                  color: gender === "female" ? "tomato" : "grey",
                 }}
               >
                 Female
@@ -129,6 +160,7 @@ export default function SignUpScreen({ navigation }) {
               onChangeText={setEmail}
               placeholder="Email"
               keyboardType="email-address"
+              autoCapitalize="none"
             />
             {email.trim() && !email.endsWith("@gmail.com") && (
               <Ionicons name="alert" color={"red"} size={24} />
@@ -197,9 +229,9 @@ export default function SignUpScreen({ navigation }) {
 
           {/**Confirm Terms */}
           <View style={styles.termContainer}>
-            <TouchableOpacity onPress={() => setConfirmTerm(!confirmTerm)}>
+            <TouchableOpacity onPress={() => setAcceptedTerms(!acceptedTerms)}>
               <Ionicons
-                name={confirmTerm ? "checkbox-outline" : "square-outline"}
+                name={acceptedTerms ? "checkbox-outline" : "square-outline"}
                 size={24}
                 color={"grey"}
               />
@@ -222,13 +254,13 @@ export default function SignUpScreen({ navigation }) {
               {
                 backgroundColor:
                   name.trim() &&
-                  sex.trim() &&
+                  gender.trim() &&
                   email.trim() &&
                   email.endsWith("@gmail.com") &&
                   password.trim() &&
                   confirmPassword.trim() &&
                   password === confirmPassword &&
-                  confirmTerm
+                  acceptedTerms
                     ? "green"
                     : "grey",
                 marginTop: showTermsContent ? 10 : 50,
@@ -236,19 +268,23 @@ export default function SignUpScreen({ navigation }) {
             ]}
             disabled={
               name.trim() &&
-              sex.trim() &&
+              gender.trim() &&
               email.trim() &&
               email.endsWith("@gmail.com") &&
               password.trim() &&
               confirmPassword.trim() &&
               password === confirmPassword &&
-              confirmTerm
+              acceptedTerms
                 ? false
                 : true
             }
-            onPress={() => navigation.navigate("VerifyOTP", { email: email })}
+            onPress={() => handleSignUp()}
           >
-            <Text style={styles.buttonContent}>Sign Up</Text>
+            {loading ? (
+              <ActivityIndicator size={"large"} color={"white"} />
+            ) : (
+              <Text style={styles.buttonContent}>Sign Up</Text>
+            )}
           </TouchableOpacity>
 
           {/**Go to Login */}
@@ -324,14 +360,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: "grey",
   },
-  subEnterSexContainer: {
+  subEnterGenderContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     height: 50,
     width: 300,
   },
-  sexContainer: {
+  genderContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

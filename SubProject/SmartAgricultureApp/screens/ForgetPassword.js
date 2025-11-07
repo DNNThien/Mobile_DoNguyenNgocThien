@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, useSafeAreaFrame } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import {
   StyleSheet,
@@ -8,11 +8,41 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
+import { checkEmailExists, resetPasswordSendOtp } from "../components/UserAPI";
+import { showAlert } from "../components/ShowAlert";
 
 export default function ForgetPassword({ route, navigation }) {
+  const [loading, setLoading] = useState(false);
   const initialEmail = route.params.email || "";
   const [email, setEmail] = useState(initialEmail);
+
+  const printLog = (title, data) => {
+    console.log("ForgetPasswordScreen: ", title, data);
+  };
+
+  const handleSendCode = async () => {
+    try {
+      setLoading(true);
+      const checkEmail = await checkEmailExists(email);
+      printLog("Result check email: ", checkEmail);
+      if (checkEmail.success) {
+        const result = await resetPasswordSendOtp(email);
+        printLog("Result send OTP for reset-password: ", result);
+        setLoading(false);
+        navigation.navigate("VerifyOTP", {
+          purpose: "reset-password",
+          email: email,
+        });
+      } else {
+        showAlert("Notification", "Account not found");
+        setLoading(false);
+      }
+    } catch (err) {
+      printLog("Error: ", err);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -43,6 +73,7 @@ export default function ForgetPassword({ route, navigation }) {
           onChangeText={setEmail}
           placeholder="Email"
           keyboardType="email-address"
+          autoCapitalize="none"
         />
         {email.trim() && !email.endsWith("@gmail.com") && (
           <Ionicons name="alert" size={24} color={"red"} />
@@ -58,9 +89,13 @@ export default function ForgetPassword({ route, navigation }) {
           },
         ]}
         disabled={email.trim() && email.endsWith("@gmail.com") ? false : true}
-        onPress={() => navigation.navigate("VerifyOTP", { email: email })}
+        onPress={() => handleSendCode()}
       >
-        <Text style={styles.buttonContent}>Send code</Text>
+        {loading ? (
+          <ActivityIndicator size={"large"} color={"white"} />
+        ) : (
+          <Text style={styles.buttonContent}>Send code</Text>
+        )}
       </TouchableOpacity>
     </SafeAreaView>
   );
